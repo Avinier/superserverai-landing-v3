@@ -42,6 +42,7 @@
   --font-title: 'Tiempos', Georgia, serif;
   --font-content: 'Geist', system-ui, sans-serif;
   --font-mono: 'Montserrat', monospace;
+  --font-montserrat: 'Montserrat', sans-serif;
 
   /* Animation Timing */
   --transition-fast: 150ms ease;

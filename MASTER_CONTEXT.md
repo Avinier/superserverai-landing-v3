@@ -165,16 +165,21 @@ Vendor Agent (Docker Container) → Installed into → Customer's Infrastructure
 | CLI | Command-line interface | TBD |
 | Slack/Discord Bot | Team collaboration integration | TBD |
 
-### The "Aha Moment" - TO BE DEFINED
+### The "Aha Moment" - LOCKED IN
 
-**Current Options to Explore:**
+**Primary Aha Moment: Auto-Discovery**
+> Install the SuperServer AI container → instantly see a visual map of all running services, their relationships, ports, health status, and resource usage.
 
-1. **Auto-Discovery**: Install container → instantly maps all running services, their relationships, and health status
-2. **First Deploy**: Connect GitHub → agent auto-creates CI/CD pipeline → deploys on first push
-3. **Find a Problem**: Agent immediately identifies a misconfiguration, security issue, or optimization opportunity
-4. **Time-to-Value**: "In 5 minutes, see what took your DevOps team a week to set up"
+**Why This Works:**
+- Zero configuration required - just works out of the box
+- Immediately demonstrates the agent "sees" and understands the infrastructure
+- Creates the foundation for all other features (deploy, monitor, fix)
+- Low barrier to wow moment
 
-> **OPEN QUESTION**: What is the single most impressive thing that happens in the first 5 minutes?
+**Core Product Flow:**
+```
+Connect GitHub → Add deployment notes (natural language) → Watch it deploy
+```
 
 ---
 
@@ -206,29 +211,60 @@ Vendor Agent (Docker Container) → Installed into → Customer's Infrastructure
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Key Technical Questions - TO BE DEFINED
+### Technical Decisions Made
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| **LLM Backend** | Cloud API (OpenAI/Anthropic) | Best quality, fastest to ship |
+| **Source Model** | Closed Source | Easier to monetize, control |
+
+### Key Technical Questions - REMAINING
 
 - [ ] How does the agent discover existing containers/services?
 - [ ] How does it connect to Git providers (GitHub, GitLab, Bitbucket)?
-- [ ] What's the LLM backend (local model, API calls, hybrid)?
 - [ ] How are credentials/secrets handled?
 - [ ] How does the dashboard authenticate users?
 - [ ] What's the update/upgrade mechanism for the agent?
+- [ ] What context is sent to the LLM API? (see Privacy Model below)
+
+### Privacy Model - LOCKED IN
+
+**Positioning: Emphasize What Matters**
+
+> "Your source code and secrets never leave your infrastructure. The agent reasons about deployment context, not your proprietary code."
+
+**What Stays Local:**
+- Source code files
+- Environment variables / secrets
+- Database contents
+- Application logs (raw)
+
+**What May Be Sent to LLM:**
+- Deployment metadata (service names, ports, health status)
+- Error summaries (not full stack traces with sensitive data)
+- User commands/intents
+- Infrastructure topology (abstracted)
 
 ---
 
 ## 7. Business Model
 
-> **TO BE DEFINED**
+### Pricing Model - LOCKED IN: Freemium
 
-### Potential Models
+**Structure:** Free tier + Paid subscription
 
-| Model | Description | Pros | Cons |
-|-------|-------------|------|------|
-| **Open Core** | Free self-hosted, paid cloud/enterprise features | Community growth, trust | Revenue delayed |
-| **Usage-Based** | Pay per deployment, per monitored container | Aligns with value | Hard to predict |
-| **Seat-Based** | Per developer/team member | Predictable revenue | May limit adoption |
-| **Tiered** | Free tier → Pro → Enterprise | Land and expand | Feature gating complexity |
+| Tier | Price | Includes | Target |
+|------|-------|----------|--------|
+| **Free** | $0 | Limited projects/deployments, core features | Indie devs, evaluation |
+| **Pro** | TBD | Unlimited projects, advanced monitoring, priority support | Startups |
+| **Enterprise** | Custom | SSO, audit logs, SLA, dedicated support | Scale-ups, enterprises |
+
+**Rationale:** Industry standard for dev tools. Reduces friction, builds funnel, upgrades on value.
+
+### Revenue Model Details - TO DEFINE
+- [ ] What limits on free tier? (# projects, # deployments/month, # containers)
+- [ ] Pro pricing point ($29? $49? $99?)
+- [ ] Usage-based component or pure flat fee?
 
 ---
 
@@ -266,10 +302,18 @@ Vendor Agent (Docker Container) → Installed into → Customer's Infrastructure
 
 ## 9. Vision & Roadmap
 
-> **TO BE DEFINED**
+### Vision Statement - LOCKED IN
+> **"The default DevOps layer for every startup."**
 
-### Potential Vision Statement
-*"Every developer team deserves a tireless DevOps engineer that lives in their infrastructure, knows their codebase, and never sleeps."*
+### What This Means
+- Every early-stage company installs SuperServer AI as naturally as they set up GitHub
+- DevOps becomes a solved problem for startups - no hire needed until Series B+
+- SuperServer AI is the invisible infrastructure that "just handles" deployment
+
+### Alternative Tagline Options
+- *"Every developer team deserves a tireless DevOps engineer that lives in their infrastructure, knows their codebase, and never sleeps."*
+- *"Your AI DevOps team, running in your infrastructure."*
+- *"DevOps on autopilot."*
 
 ### Potential Roadmap Phases
 
@@ -298,24 +342,45 @@ Vendor Agent (Docker Container) → Installed into → Customer's Infrastructure
 
 ---
 
-## 10. Open Questions
+## 10. Company & Team
 
-### Product
-- [ ] What is the "aha moment" for first-time users?
+### Team
+- Founders + Co-founders (details TBD)
+
+### Stage
+- **Current:** Prototype
+- **Funding:** Bootstrapped
+- **Target Launch:** April-May 2026 (3-4 months out)
+
+### Milestones to Launch
+- [ ] Complete prototype → working MVP
+- [ ] Alpha testing with friendly users
+- [ ] Landing page live
+- [ ] Launch on Product Hunt / Hacker News
+- [ ] First 10 paying customers
+
+---
+
+## 11. Open Questions
+
+### Product - REMAINING
+- [x] ~~What is the "aha moment" for first-time users?~~ → Auto-discovery
 - [ ] What's the minimum feature set for v1?
-- [ ] CLI vs Dashboard vs Chat - which is primary?
+- [ ] CLI vs Dashboard vs Chat - which is primary? → Dashboard + Chat confirmed
 
-### Technical
-- [ ] LLM strategy: Local (Ollama), Cloud API, or hybrid?
+### Technical - REMAINING
+- [x] ~~LLM strategy~~ → Cloud API
 - [ ] How to handle secrets securely?
 - [ ] What's the resource footprint of the agent container?
+- [ ] How does auto-discovery technically work?
 
-### Business
-- [ ] Pricing model?
-- [ ] Open source or closed source?
-- [ ] How to build community/trust?
+### Business - REMAINING
+- [x] ~~Pricing model?~~ → Freemium
+- [x] ~~Open source or closed source?~~ → Closed source
+- [ ] Specific pricing tiers and limits?
+- [ ] How to build trust without open source?
 
-### Go-to-Market
+### Go-to-Market - TO DEFINE
 - [ ] Launch strategy (Product Hunt, HN, DevRel)?
 - [ ] First 10 customers - who and how?
 - [ ] Content/SEO strategy?
