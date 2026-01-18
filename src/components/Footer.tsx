@@ -16,7 +16,6 @@ const Footer = () => {
     ],
     Company: [
       { name: 'About', href: '#about' },
-      { name: 'Blog', href: '#blog' },
       { name: 'Careers', href: '#careers' },
       { name: 'Press', href: '#press' },
       { name: 'Partners', href: '#partners' },
@@ -76,11 +75,14 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
           {/* Logo and Tagline */}
           <div className="col-span-2">
-            <div className="font-title text-2xl font-medium text-text mb-4">
-              SuperServer<span className="text-primary">AI</span>
+            <div className="flex items-center gap-2 mb-4">
+              <img src="/logo-icon.png" alt="SuperServer AI Logo" className="w-10 h-10" />
+              <span className="font-title text-2xl font-medium text-text">
+                SuperServer.AI
+              </span>
             </div>
             <p className="text-text-muted text-sm max-w-xs mb-6">
-              The perpetual sandbox platform for AI agents. Build, deploy, and scale with enterprise-grade infrastructure.
+              The AI DevOps platform that runs in your infrastructure.
             </p>
             {/* Social Links */}
             <div className="flex gap-4">

@@ -1,0 +1,101 @@
+{
+  "diagram": {
+    "title": "Redis to EC2 Server Architecture",
+    "nodes": [
+      {
+        "id": "redis",
+        "label": "Redis",
+        "type": "container",
+        "icon": "redis",
+        "variant": "highlight",
+        "bullets": [
+          "In-memory cache",
+          "Session storage",
+          "Pub/Sub messaging"
+        ]
+      },
+      {
+        "id": "ec2_instance",
+        "label": "EC2 Instance",
+        "type": "container",
+        "icon": "amazonaws",
+        "variant": "highlight",
+        "children": [
+          {
+            "id": "nginx",
+            "label": "Nginx",
+            "type": "box",
+            "icon": "nginx",
+            "subtitle": "Reverse Proxy",
+            "bullets": [
+              "Load balancing",
+              "SSL termination"
+            ]
+          },
+          {
+            "id": "app_server",
+            "label": "Application Server",
+            "type": "box",
+            "icon": "nodedotjs",
+            "subtitle": "Node.js Runtime",
+            "bullets": [
+              "Business logic",
+              "API endpoints",
+              "Redis client"
+            ]
+          },
+          {
+            "id": "ebs_volume",
+            "label": "EBS Volume",
+            "type": "pill",
+            "subtitle": "Persistent Storage"
+          }
+        ]
+      },
+      {
+        "id": "security_group",
+        "label": "Security Group",
+        "type": "pill",
+        "subtitle": "Inbound/Outbound Rules"
+      },
+      {
+        "id": "iam_role",
+        "label": "IAM Role",
+        "type": "pill",
+        "subtitle": "AWS Permissions"
+      }
+    ],
+    "connections": [
+      {
+        "from": "redis",
+        "to": "ec2_instance",
+        "label": "TCP :6379",
+        "style": "primary",
+        "exitSide": "right",
+        "enterSide": "left",
+        "annotation": {
+          "position": "right",
+          "bullets": [
+            "Persistent connection pool",
+            "Session caching",
+            "Real-time pub/sub"
+          ]
+        }
+      },
+      {
+        "from": "ec2_instance",
+        "to": "security_group",
+        "style": "secondary",
+        "exitSide": "bottom",
+        "enterSide": "top"
+      },
+      {
+        "from": "ec2_instance",
+        "to": "iam_role",
+        "style": "secondary",
+        "exitSide": "bottom",
+        "enterSide": "top"
+      }
+    ]
+  }
+}

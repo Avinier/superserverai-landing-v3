@@ -1,0 +1,116 @@
+{
+  "diagram": {
+    "title": "",
+
+    "nodes": [
+      {
+        "id": "app",
+        "label": "Your application",
+        "type": "box"
+      },
+      {
+        "id": "postgres",
+        "label": "Postgres database",
+        "type": "container",
+        "icon": "postgresql",
+        "variant": "highlight",
+        "bullets": [
+          "Transactional",
+          "ACID compliant"
+        ],
+        "children": [
+          {
+            "id": "pg_clickhouse",
+            "label": "pg_clickhouse",
+            "type": "box",
+            "labelStyle": "code",
+            "bullets": [
+              "JOINs",
+              "Aggregations",
+              "Pushdown"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "nvme",
+        "label": "NVMe",
+        "type": "pill",
+        "repeat": 3,
+        "layout": "vertical"
+      },
+      {
+        "id": "clickpipes",
+        "label": "ClickPipes CDC",
+        "type": "box",
+        "subtitle": "INSERT UPDATE DELETE"
+      },
+      {
+        "id": "clickhouse",
+        "label": "ClickHouse database",
+        "type": "container",
+        "icon": "clickhouse",
+        "variant": "highlight",
+        "bullets": [
+          "Columnar storage",
+          "100x faster OLAP"
+        ]
+      }
+    ],
+
+    "connections": [
+      {
+        "from": "app",
+        "to": "postgres",
+        "label": "Transactions",
+        "style": "primary",
+        "exitSide": "right",
+        "enterSide": "left"
+      },
+      {
+        "from": "app",
+        "to": "pg_clickhouse",
+        "label": "Analytics",
+        "style": "primary",
+        "exitSide": "bottom",
+        "enterSide": "left"
+      },
+      {
+        "from": "postgres",
+        "to": ["nvme_1", "nvme_2", "nvme_3"],
+        "style": "secondary",
+        "exitSide": "right",
+        "enterSide": "left"
+      },
+      {
+        "from": "postgres",
+        "to": "clickpipes",
+        "style": "secondary",
+        "exitSide": "bottom",
+        "enterSide": "top"
+      },
+      {
+        "from": "clickpipes",
+        "to": "clickhouse",
+        "style": "secondary",
+        "exitSide": "bottom",
+        "enterSide": "top"
+      },
+      {
+        "from": "clickhouse",
+        "to": "nvme_3",
+        "style": "secondary",
+        "exitSide": "right",
+        "enterSide": "bottom",
+        "annotation": {
+          "position": "right",
+          "bullets": [
+            "Powered by ClickPipes",
+            "Logical replication",
+            "Minimal impact on primary"
+          ]
+        }
+      }
+    ]
+  }
+}

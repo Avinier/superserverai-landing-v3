@@ -1,0 +1,94 @@
+{
+  "diagram": {
+    "title": "Redis to EC2 Architecture",
+    "nodes": [
+      {
+        "id": "redis",
+        "label": "Redis",
+        "type": "container",
+        "icon": "redis",
+        "variant": "highlight",
+        "bullets": [
+          "In-memory cache",
+          "Session storage"
+        ]
+      },
+      {
+        "id": "ec2_instance",
+        "label": "EC2 Instance",
+        "type": "container",
+        "icon": "amazonaws",
+        "variant": "highlight",
+        "children": [
+          {
+            "id": "app_server",
+            "label": "Application Server",
+            "type": "box",
+            "subtitle": "Node.js / Python",
+            "bullets": [
+              "Handles requests",
+              "Business logic"
+            ]
+          },
+          {
+            "id": "nginx",
+            "label": "Nginx",
+            "type": "box",
+            "icon": "nginx",
+            "subtitle": "Reverse proxy"
+          },
+          {
+            "id": "ebs_volume",
+            "label": "EBS Volume",
+            "type": "box",
+            "subtitle": "Persistent storage"
+          }
+        ]
+      },
+      {
+        "id": "security_group",
+        "label": "Security Group",
+        "type": "pill",
+        "subtitle": "Firewall rules"
+      },
+      {
+        "id": "iam_role",
+        "label": "IAM Role",
+        "type": "pill",
+        "subtitle": "Permissions"
+      }
+    ],
+    "connections": [
+      {
+        "from": "redis",
+        "to": "ec2_instance",
+        "label": "TCP :6379",
+        "style": "primary",
+        "exitSide": "bottom",
+        "enterSide": "top",
+        "annotation": {
+          "position": "right",
+          "bullets": [
+            "Persistent connection",
+            "Session caching",
+            "Pub/Sub messaging"
+          ]
+        }
+      },
+      {
+        "from": "ec2_instance",
+        "to": "security_group",
+        "style": "secondary",
+        "exitSide": "right",
+        "enterSide": "left"
+      },
+      {
+        "from": "ec2_instance",
+        "to": "iam_role",
+        "style": "secondary",
+        "exitSide": "right",
+        "enterSide": "left"
+      }
+    ]
+  }
+}

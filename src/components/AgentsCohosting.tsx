@@ -1,3 +1,5 @@
+import { Button } from './ui/Button';
+
 const AgentsCohosting = () => {
   const deploymentMessages = [
     { type: 'success', message: 'Agent deployed successfully', timestamp: '2m ago' },
@@ -66,12 +68,12 @@ const AgentsCohosting = () => {
 
             {/* Action buttons */}
             <div className="mt-6 flex gap-3">
-              <button className="flex-1 px-4 py-2 rounded-lg bg-primary text-text text-sm font-medium btn-glow">
+              <Button className="flex-1 btn-glow">
                 Deploy to Production
-              </button>
-              <button className="px-4 py-2 rounded-lg border border-border bg-surface-elevated text-text-muted text-sm hover:text-text hover:border-primary/30 transition-all duration-300">
+              </Button>
+              <Button variant="outline">
                 View Logs
-              </button>
+              </Button>
             </div>
           </div>
 

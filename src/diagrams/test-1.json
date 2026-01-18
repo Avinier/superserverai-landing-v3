@@ -1,0 +1,81 @@
+{
+  "diagram": {
+    "title": "Redis to EC2 Architecture",
+    "nodes": [
+      {
+        "id": "redis",
+        "label": "Redis",
+        "type": "container",
+        "icon": "redis",
+        "variant": "highlight",
+        "subtitle": "Cache / Data Store"
+      },
+      {
+        "id": "ec2_instance",
+        "label": "EC2 Instance",
+        "type": "container",
+        "icon": "amazonaws",
+        "variant": "highlight",
+        "children": [
+          {
+            "id": "app_server",
+            "label": "Application Server",
+            "type": "box",
+            "subtitle": "Node.js / Python",
+            "bullets": ["Handles requests", "Business logic"]
+          },
+          {
+            "id": "network_interface",
+            "label": "ENI",
+            "type": "pill",
+            "subtitle": "Network Interface"
+          },
+          {
+            "id": "ebs_volume",
+            "label": "EBS Volume",
+            "type": "pill",
+            "subtitle": "Storage"
+          }
+        ],
+        "layout": "vertical"
+      },
+      {
+        "id": "security_group",
+        "label": "Security Group",
+        "type": "pill",
+        "subtitle": "Firewall Rules",
+        "bullets": ["Port 6379 (Redis)", "Port 443 (HTTPS)"]
+      },
+      {
+        "id": "iam_role",
+        "label": "IAM Role",
+        "type": "pill",
+        "subtitle": "Permissions"
+      }
+    ],
+    "connections": [
+      {
+        "from": "ec2_instance",
+        "to": "redis",
+        "label": "TCP :6379",
+        "style": "primary",
+        "annotation": {
+          "position": "left",
+          "bullets": ["Cache reads/writes", "Session storage"]
+        }
+      },
+      {
+        "from": "security_group",
+        "to": "ec2_instance",
+        "label": "Controls access",
+        "style": "secondary"
+      },
+      {
+        "from": "iam_role",
+        "to": "ec2_instance",
+        "label": "Attached",
+        "style": "secondary"
+      }
+    ]
+  }
+}

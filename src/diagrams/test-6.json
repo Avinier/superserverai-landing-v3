@@ -1,0 +1,74 @@
+{
+  "diagram": {
+    "title": "Redis to EC2 Server Architecture",
+    "nodes": [
+      {
+        "id": "redis",
+        "label": "Redis",
+        "type": "container",
+        "icon": "redis",
+        "variant": "highlight",
+        "subtitle": "In-Memory Cache"
+      },
+      {
+        "id": "ec2_server",
+        "label": "EC2 Instance",
+        "type": "container",
+        "icon": "amazonaws",
+        "variant": "highlight",
+        "subtitle": "t3.large",
+        "children": [
+          {
+            "id": "app_service",
+            "label": "Application",
+            "type": "box",
+            "subtitle": "Node.js API",
+            "icon": "nodedotjs"
+          },
+          {
+            "id": "docker_runtime",
+            "label": "Docker Runtime",
+            "type": "box",
+            "icon": "docker",
+            "subtitle": "Container Engine"
+          },
+          {
+            "id": "ebs_volume",
+            "label": "EBS Volume",
+            "type": "pill",
+            "subtitle": "gp3 / 100GB"
+          },
+          {
+            "id": "eni",
+            "label": "Network Interface",
+            "type": "pill",
+            "subtitle": "ENI / VPC"
+          },
+          {
+            "id": "security_group",
+            "label": "Security Group",
+            "type": "pill",
+            "subtitle": "Firewall Rules"
+          }
+        ],
+        "layout": "vertical"
+      }
+    ],
+    "connections": [
+      {
+        "from": "redis",
+        "to": "ec2_server",
+        "label": "TCP 6379",
+        "style": "primary",
+        "annotation": {
+          "position": "right",
+          "bullets": [
+            "Session data",
+            "Cache queries",
+            "Pub/Sub messages"
+          ]
+        }
+      }
+    ]
+  }
+}

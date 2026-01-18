@@ -1,3 +1,5 @@
+import { Button, ArrowIcon } from './ui/Button';
+
 const CTABanner = () => {
   return (
     <section className="py-20 md:py-28 relative overflow-hidden">
@@ -34,32 +36,22 @@ const CTABanner = () => {
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="max-w-2xl">
           <h2 className="font-title text-3xl md:text-4xl lg:text-5xl font-medium text-white mb-6">
-            Achieve near instant latency today.
+            Ready to stop babysitting your infrastructure?
           </h2>
           <p className="text-lg text-white/80 mb-8">
-            Start building with SuperServer in minutes. No credit card required for the free tier.
+            Install ssai in minutes. Ship like you have a platform team.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-4">
-            <a
-              href="#get-started"
-              className="inline-flex items-center gap-2 rounded-lg bg-white text-primary px-6 py-3 text-sm font-medium transition-all duration-300 hover:bg-white/90 hover:scale-[1.02] hover:shadow-lg hover:shadow-white/20"
-            >
-              Get started on SuperServer
-              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-            <a
-              href="#demo"
-              className="inline-flex items-center gap-2 rounded-lg border border-white/50 bg-transparent text-white px-6 py-3 text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:border-white hover:scale-[1.02]"
-            >
-              Get a demo
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
+            <Button as="a" href="#get-started" variant="solid-inverted">
+              Try it now
+              <ArrowIcon />
+            </Button>
+            <Button as="a" href="#contact" variant="outline-inverted">
+              Talk to founders
+              <ArrowIcon />
+            </Button>
           </div>
         </div>
       </div>

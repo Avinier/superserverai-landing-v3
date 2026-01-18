@@ -1,0 +1,75 @@
+{
+  "diagram": {
+    "title": "Redis to EC2 Architecture",
+    "nodes": [
+      {
+        "id": "redis",
+        "label": "Redis",
+        "type": "container",
+        "icon": "redis",
+        "variant": "highlight",
+        "subtitle": "In-memory cache"
+      },
+      {
+        "id": "ec2_instance",
+        "label": "EC2 Instance",
+        "type": "container",
+        "icon": "amazonaws",
+        "variant": "highlight",
+        "layout": "vertical",
+        "children": [
+          {
+            "id": "app_server",
+            "label": "Application Server",
+            "type": "box",
+            "icon": "nodedotjs",
+            "subtitle": "Backend service"
+          },
+          {
+            "id": "nginx",
+            "label": "Nginx",
+            "type": "pill",
+            "icon": "nginx",
+            "subtitle": "Reverse proxy"
+          },
+          {
+            "id": "ebs_volume",
+            "label": "EBS Volume",
+            "type": "pill",
+            "subtitle": "Persistent storage"
+          },
+          {
+            "id": "security_group",
+            "label": "Security Group",
+            "type": "pill",
+            "subtitle": "Firewall rules"
+          }
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "from": "redis",
+        "to": "app_server",
+        "label": "Cache read/write",
+        "style": "primary",
+        "annotation": {
+          "position": "right",
+          "bullets": ["Session data", "Query caching", "Rate limiting"]
+        }
+      },
+      {
+        "from": "nginx",
+        "to": "app_server",
+        "label": "Proxy requests",
+        "style": "secondary"
+      },
+      {
+        "from": "app_server",
+        "to": "ebs_volume",
+        "label": "Persist data",
+        "style": "secondary"
+      }
+    ]
+  }
+}

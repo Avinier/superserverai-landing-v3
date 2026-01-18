@@ -1,13 +1,131 @@
-import { useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { Button, ArrowIcon } from './ui/Button';
+
+// Terminal animation phases
+type Phase = 'typing-pull' | 'pulling' | 'typing-run' | 'running' | 'complete';
+
+// Terminal animation types (Phase defined above)
 
 const Hero = () => {
-  const [activeTab, setActiveTab] = useState<'ts' | 'py'>('ts');
-  const [copied, setCopied] = useState(false);
+  const [phase, setPhase] = useState<Phase>('typing-pull');
+  const [typedChars, setTypedChars] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [showCursor, setShowCursor] = useState(true);
+  const [runningLineIndex, setRunningLineIndex] = useState(0);
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText('npm install @superserver/core');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  // Command strings
+  const pullCommand = 'docker pull ssai';
+  const runCommand = 'docker run -p 3000:3000 ssai';
+
+  // Cursor blink effect
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 530);
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  // Main animation sequence
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    switch (phase) {
+      case 'typing-pull':
+        if (typedChars < pullCommand.length) {
+          timer = setTimeout(() => {
+            setTypedChars(prev => prev + 1);
+          }, 40);
+        } else {
+          timer = setTimeout(() => {
+            setPhase('pulling');
+          }, 300);
+        }
+        break;
+
+      case 'pulling':
+        if (progress < 100) {
+          timer = setTimeout(() => {
+            setProgress(prev => Math.min(prev + 2, 100));
+          }, 30);
+        } else {
+          timer = setTimeout(() => {
+            setTypedChars(0);
+            setPhase('typing-run');
+          }, 500);
+        }
+        break;
+
+      case 'typing-run':
+        if (typedChars < runCommand.length) {
+          timer = setTimeout(() => {
+            setTypedChars(prev => prev + 1);
+          }, 40);
+        } else {
+          timer = setTimeout(() => {
+            setPhase('running');
+          }, 300);
+        }
+        break;
+
+      case 'running':
+        if (runningLineIndex < 2) {
+          timer = setTimeout(() => {
+            setRunningLineIndex(prev => prev + 1);
+          }, 400);
+        } else {
+          timer = setTimeout(() => {
+            setPhase('complete');
+          }, 300);
+        }
+        break;
+
+      case 'complete':
+        // Animation complete - stay in this state
+        break;
+    }
+
+    return () => clearTimeout(timer);
+  }, [phase, typedChars, progress, runningLineIndex]);
+
+  // Reset animation (for looping if needed)
+  const resetAnimation = useCallback(() => {
+    setPhase('typing-pull');
+    setTypedChars(0);
+    setProgress(0);
+    setRunningLineIndex(0);
+  }, []);
+
+  // Restart animation after 5 seconds of completion
+  useEffect(() => {
+    if (phase === 'complete') {
+      const restartTimer = setTimeout(() => {
+        resetAnimation();
+      }, 8000);
+      return () => clearTimeout(restartTimer);
+    }
+  }, [phase, resetAnimation]);
+
+  // Progress bar visual
+  const progressBar = () => {
+    const filled = Math.floor(progress / 4);
+    const empty = 25 - filled;
+    return `[${'='.repeat(filled)}${empty > 0 ? '>' : ''}${' '.repeat(Math.max(0, empty - 1))}]`;
+  };
+
+  // Get current typing text
+  const getCurrentTypingText = () => {
+    if (phase === 'typing-pull') {
+      return pullCommand.slice(0, typedChars);
+    }
+    if (phase === 'typing-run') {
+      return runCommand.slice(0, typedChars);
+    }
+    return '';
+  };
+
+  // Check if cursor should show for current line
+  const shouldShowCursor = (linePhase: Phase) => {
+    return (phase === linePhase && (phase === 'typing-pull' || phase === 'typing-run')) && showCursor;
   };
 
   return (
@@ -28,205 +146,122 @@ const Hero = () => {
 
             {/* Title */}
             <h1 className="font-title text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.1] text-text">
-              The perpetual sandbox platform
+              The DevOps layer that runs itself
             </h1>
 
             {/* Subtitle */}
             <p className="text-lg text-text-muted max-w-lg leading-relaxed">
-              Build, deploy, and scale AI agents with secure, isolated sandbox environments.
-              Sub-millisecond latency, infinite persistence, and enterprise-grade security.
+              A DevOps agent that lives in your infrastructure. The $200K hire you don't have to make.
             </p>
 
             {/* CTAs */}
             <div className="flex flex-wrap items-center gap-3 mt-4">
-              <a
-                href="#get-started"
-                className="inline-flex items-center gap-2 rounded-lg bg-text text-background px-5 py-3 text-sm font-medium hover:bg-text/90 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-white/10"
-              >
-                Try SuperServer
-                <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-              <a
-                href="#demo"
-                className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-5 py-3 text-sm font-medium text-text hover:bg-surface-elevated transition-all duration-300 hover:border-primary/30"
-              >
-                Get a demo
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-              <button
-                onClick={handleCopy}
-                className="inline-flex items-center gap-3 rounded-lg border border-border bg-surface px-4 py-3 text-sm font-mono text-text-muted hover:bg-surface-elevated transition-all duration-300 hover:border-primary/30"
-              >
-                <span className="text-text-muted">$</span>
-                <span>npm install @superserver/core</span>
-                {copied ? (
-                  <svg className="w-4 h-4 text-green-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                ) : (
-                  <svg className="w-4 h-4 transition-transform duration-200 hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                )}
-              </button>
+              <Button as="a" href="#get-started">
+                Try it now
+                <ArrowIcon />
+              </Button>
+              <Button as="a" href="#contact" variant="outline">
+                Talk to founders
+                <ArrowIcon />
+              </Button>
             </div>
           </div>
 
-          {/* Right Column - Code Window */}
+          {/* Right Column - Terminal Window */}
           <div className="rounded-xl border border-border bg-surface overflow-hidden shadow-2xl animate-slide-in-right hover:shadow-primary/10 transition-shadow duration-500">
-            {/* Window Header */}
+            {/* Terminal Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-surface-elevated">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
                 <div className="w-3 h-3 rounded-full bg-[#febc2e]"></div>
                 <div className="w-3 h-3 rounded-full bg-[#28c840]"></div>
               </div>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => setActiveTab('ts')}
-                  className={`px-3 py-1 text-xs rounded-md transition-colors ${
-                    activeTab === 'ts'
-                      ? 'bg-primary/20 text-primary'
-                      : 'text-text-muted hover:text-text'
-                  }`}
-                >
-                  TS
-                </button>
-                <button
-                  onClick={() => setActiveTab('py')}
-                  className={`px-3 py-1 text-xs rounded-md transition-colors ${
-                    activeTab === 'py'
-                      ? 'bg-primary/20 text-primary'
-                      : 'text-text-muted hover:text-text'
-                  }`}
-                >
-                  PY
-                </button>
-              </div>
+              <span className="text-xs text-text-muted font-mono">terminal</span>
             </div>
 
-            {/* Code Content */}
-            <div className="p-4 overflow-x-auto">
-              <pre className="text-sm leading-relaxed font-mono">
-                <code>
-                  {activeTab === 'ts' ? (
-                    <>
-                      <span className="text-[#c586c0]">import</span>
-                      <span className="text-text"> {'{ '}</span>
-                      <span className="text-[#4ec9b0]">Sandbox</span>
-                      <span className="text-text">{' }'} </span>
-                      <span className="text-[#c586c0]">from</span>
-                      <span className="text-[#ce9178]"> "@superserver/core"</span>
-                      <span className="text-text">;</span>
-                      {'\n\n'}
-                      <span className="text-[#569cd6]">const</span>
-                      <span className="text-[#4fc1ff]"> sandbox</span>
-                      <span className="text-text"> = </span>
-                      <span className="text-[#c586c0]">await</span>
-                      <span className="text-[#4ec9b0]"> Sandbox</span>
-                      <span className="text-text">.</span>
-                      <span className="text-[#dcdcaa]">create</span>
-                      <span className="text-text">{'({'}</span>
-                      {'\n'}
-                      <span className="text-text">  </span>
-                      <span className="text-[#9cdcfe]">runtime</span>
-                      <span className="text-text">: </span>
-                      <span className="text-[#ce9178]">"node"</span>
-                      <span className="text-text">,</span>
-                      {'\n'}
-                      <span className="text-text">  </span>
-                      <span className="text-[#9cdcfe]">memory</span>
-                      <span className="text-text">: </span>
-                      <span className="text-[#b5cea8]">512</span>
-                      <span className="text-text">,</span>
-                      {'\n'}
-                      <span className="text-text">  </span>
-                      <span className="text-[#9cdcfe]">timeout</span>
-                      <span className="text-text">: </span>
-                      <span className="text-[#b5cea8]">30000</span>
-                      {'\n'}
-                      <span className="text-text">{'});'}</span>
-                      {'\n\n'}
-                      <span className="text-[#6a9955]">// Execute code in isolated environment</span>
-                      {'\n'}
-                      <span className="text-[#569cd6]">const</span>
-                      <span className="text-[#4fc1ff]"> result</span>
-                      <span className="text-text"> = </span>
-                      <span className="text-[#c586c0]">await</span>
-                      <span className="text-[#4fc1ff]"> sandbox</span>
-                      <span className="text-text">.</span>
-                      <span className="text-[#dcdcaa]">exec</span>
-                      <span className="text-text">(</span>
-                      <span className="text-[#ce9178]">`</span>
-                      {'\n'}
-                      <span className="text-[#ce9178]">  const data = await fetch(...);</span>
-                      {'\n'}
-                      <span className="text-[#ce9178]">  return data.json();</span>
-                      {'\n'}
-                      <span className="text-[#ce9178]">`</span>
-                      <span className="text-text">);</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-[#c586c0]">from</span>
-                      <span className="text-text"> superserver </span>
-                      <span className="text-[#c586c0]">import</span>
-                      <span className="text-[#4ec9b0]"> Sandbox</span>
-                      {'\n\n'}
-                      <span className="text-[#4fc1ff]">sandbox</span>
-                      <span className="text-text"> = </span>
-                      <span className="text-[#c586c0]">await</span>
-                      <span className="text-[#4ec9b0]"> Sandbox</span>
-                      <span className="text-text">.</span>
-                      <span className="text-[#dcdcaa]">create</span>
-                      <span className="text-text">(</span>
-                      {'\n'}
-                      <span className="text-text">    </span>
-                      <span className="text-[#9cdcfe]">runtime</span>
-                      <span className="text-text">=</span>
-                      <span className="text-[#ce9178]">"python"</span>
-                      <span className="text-text">,</span>
-                      {'\n'}
-                      <span className="text-text">    </span>
-                      <span className="text-[#9cdcfe]">memory</span>
-                      <span className="text-text">=</span>
-                      <span className="text-[#b5cea8]">512</span>
-                      <span className="text-text">,</span>
-                      {'\n'}
-                      <span className="text-text">    </span>
-                      <span className="text-[#9cdcfe]">timeout</span>
-                      <span className="text-text">=</span>
-                      <span className="text-[#b5cea8]">30000</span>
-                      {'\n'}
-                      <span className="text-text">)</span>
-                      {'\n\n'}
-                      <span className="text-[#6a9955]"># Execute code in isolated environment</span>
-                      {'\n'}
-                      <span className="text-[#4fc1ff]">result</span>
-                      <span className="text-text"> = </span>
-                      <span className="text-[#c586c0]">await</span>
-                      <span className="text-[#4fc1ff]"> sandbox</span>
-                      <span className="text-text">.</span>
-                      <span className="text-[#dcdcaa]">exec</span>
-                      <span className="text-text">(</span>
-                      <span className="text-[#ce9178]">"""</span>
-                      {'\n'}
-                      <span className="text-[#ce9178]">    import requests</span>
-                      {'\n'}
-                      <span className="text-[#ce9178]">    data = requests.get(...)</span>
-                      {'\n'}
-                      <span className="text-[#ce9178]">    return data.json()</span>
-                      {'\n'}
-                      <span className="text-[#ce9178]">"""</span>
-                      <span className="text-text">)</span>
-                    </>
+            {/* Terminal Content */}
+            <div className="p-4 font-mono text-sm leading-relaxed min-h-[280px]">
+              {/* Line 1: docker pull command */}
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">$</span>
+                <span className="text-text">
+                  {phase === 'typing-pull' ? getCurrentTypingText() : pullCommand}
+                </span>
+                {shouldShowCursor('typing-pull') && (
+                  <span className="ml-0.5 w-2 h-4 bg-text inline-block animate-pulse"></span>
+                )}
+              </div>
+
+              {/* Line 2: Pulling output (shown after typing-pull) */}
+              {(phase !== 'typing-pull') && (
+                <div className="text-text-muted mt-1">
+                  Pulling from superserverai/ssai...
+                </div>
+              )}
+
+              {/* Line 3: Progress bar (shown during pulling and after) */}
+              {(phase === 'pulling' || phase === 'typing-run' || phase === 'running' || phase === 'complete') && (
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-primary">{progressBar()}</span>
+                  <span className="text-text-muted">{progress}%</span>
+                </div>
+              )}
+
+              {/* Blank line */}
+              {(phase === 'typing-run' || phase === 'running' || phase === 'complete') && (
+                <div className="h-4"></div>
+              )}
+
+              {/* Line 5: docker run command */}
+              {(phase === 'typing-run' || phase === 'running' || phase === 'complete') && (
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">$</span>
+                  <span className="text-text">
+                    {phase === 'typing-run' ? getCurrentTypingText() : runCommand}
+                  </span>
+                  {shouldShowCursor('typing-run') && (
+                    <span className="ml-0.5 w-2 h-4 bg-text inline-block animate-pulse"></span>
                   )}
-                </code>
-              </pre>
+                </div>
+              )}
+
+              {/* Line 6: ssai initialized (shown during running phase) */}
+              {(phase === 'running' || phase === 'complete') && runningLineIndex >= 1 && (
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-green-500">&#10003;</span>
+                  <span className="text-text">ssai initialized</span>
+                </div>
+              )}
+
+              {/* Line 7: Running on URL (shown at end of running phase) */}
+              {(phase === 'running' || phase === 'complete') && runningLineIndex >= 2 && (
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-green-500">&#10003;</span>
+                  <span className="text-text">Running on </span>
+                  <a
+                    href="#"
+                    className={`text-primary transition-all duration-300 ${
+                      phase === 'complete' ? 'animate-pulse-subtle' : ''
+                    }`}
+                    style={phase === 'complete' ? {
+                      textShadow: '0 0 10px rgba(37, 75, 241, 0.5), 0 0 20px rgba(37, 75, 241, 0.3)'
+                    } : {}}
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    http://localhost:3000
+                  </a>
+                </div>
+              )}
+
+              {/* Blinking cursor at the end when complete */}
+              {phase === 'complete' && (
+                <div className="flex items-center mt-2">
+                  <span className="text-green-500 mr-2">$</span>
+                  {showCursor && (
+                    <span className="w-2 h-4 bg-text inline-block"></span>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

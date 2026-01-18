@@ -33,7 +33,7 @@
 | Company | Hero Title | Key Differentiator |
 |---------|------------|-------------------|
 | **E2B** | "AI Sandboxes for Code Execution" | Open-source, Firecracker MicroVMs, ~150ms cold start, enterprise-ready |
-| **Daytona** | "Run AI Code" | Sub-90ms sandbox creation, Git-native, stateful infrastructure |
+| **Daytona** | "Run AI Code" | ~200ms sandbox provisioning, Git-native, stateful infrastructure |
 | **Modal** | "AI infrastructure developers love" | Serverless, GPU support, 50k+ concurrent sessions |
 | **AgentSphere** | "Run AI Agents Reliably, At Scale" | MCP-integrated, GitOps/CI integration, per-second billing |
 | **AgentBox** | "AI Sandboxes for Automation Agents" | Enterprise security focus, VM-based isolation |
@@ -41,7 +41,7 @@
 #### Tier 2: Agentic DevOps Platforms
 | Company | Hero Title | Key Differentiator |
 |---------|------------|-------------------|
-| **StackGen** | "AI Wrote Your Code, Now AI Manages Your Infra" | Aiden agent, natural language → IaC, 95% reduction in provisioning time |
+| **StackGen** | "AI Wrote Your Code, Now AI Manages Your Infra" | Aiden agent, natural language → IaC, 95% automated provisioning |
 | **DuploCloud** | "Duplo, The AI DevOps Engineer" | 6 specialized agents (K8s, CI/CD, Cost, etc.), sandbox for testing |
 | **OpsMx (Argonaut)** | "AI-Generated Code Security & Control" | Autonomous remediation, security scanning, GitOps integration |
 
@@ -253,18 +253,20 @@ Connect GitHub → Add deployment notes (natural language) → Watch it deploy
 
 **Structure:** Free tier + Paid subscription
 
-| Tier | Price | Includes | Target |
-|------|-------|----------|--------|
-| **Free** | $0 | Limited projects/deployments, core features | Indie devs, evaluation |
-| **Pro** | TBD | Unlimited projects, advanced monitoring, priority support | Startups |
-| **Enterprise** | Custom | SSO, audit logs, SLA, dedicated support | Scale-ups, enterprises |
+| Tier | Price | Target | Key Features |
+|------|-------|--------|--------------|
+| **Free** | $0 | Individuals, POCs | Limited resources, community support |
+| **Team** | $49/user/mo | 5-15 person teams | Self-hosted, full features, basic support |
+| **Growth** | $299/mo flat | 15-50 person teams | Higher limits, priority support |
+| **Enterprise** | Custom | 50+ or compliance needs | SSO, audit logs, SLA, dedicated support |
 
-**Rationale:** Industry standard for dev tools. Reduces friction, builds funnel, upgrades on value.
+**Rationale:** Undercuts StackGen's $1,999 minimum by 75%+ while maintaining viable unit economics. Industry standard freemium for dev tools reduces friction and builds funnel.
 
-### Revenue Model Details - TO DEFINE
-- [ ] What limits on free tier? (# projects, # deployments/month, # containers)
-- [ ] Pro pricing point ($29? $49? $99?)
-- [ ] Usage-based component or pure flat fee?
+### Revenue Model Details - DEFINED
+- [x] Free tier limits: Limited resources, community support only
+- [x] Team pricing: $49/user/month (self-serve)
+- [x] Growth pricing: $299/month flat (mid-market sweet spot)
+- [x] Model: Hybrid (base subscription, consider usage-based overage for scale)
 
 ---
 

@@ -1,0 +1,76 @@
+{
+  "diagram": {
+    "title": "EC2 Instance with Redis Connection",
+    "nodes": [
+      {
+        "id": "ec2_instance",
+        "label": "EC2 Instance",
+        "type": "container",
+        "icon": "amazonaws",
+        "variant": "highlight",
+        "children": [
+          {
+            "id": "app_server",
+            "label": "Application Server",
+            "type": "box",
+            "icon": "nodedotjs",
+            "subtitle": "Node.js / Python"
+          },
+          {
+            "id": "network_interface",
+            "label": "ENI",
+            "type": "pill",
+            "subtitle": "Elastic Network Interface"
+          },
+          {
+            "id": "ebs_volume",
+            "label": "EBS Volume",
+            "type": "pill",
+            "subtitle": "gp3 SSD"
+          },
+          {
+            "id": "security_group",
+            "label": "Security Group",
+            "type": "pill",
+            "subtitle": "Firewall Rules"
+          }
+        ],
+        "layout": "vertical"
+      },
+      {
+        "id": "redis",
+        "label": "Redis",
+        "type": "container",
+        "icon": "redis",
+        "variant": "highlight",
+        "subtitle": "ElastiCache / Self-hosted",
+        "bullets": [
+          "In-memory cache",
+          "Session storage",
+          "Pub/Sub messaging"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "from": "app_server",
+        "to": "redis",
+        "label": "TCP 6379",
+        "style": "primary",
+        "annotation": {
+          "position": "right",
+          "bullets": [
+            "Cache reads/writes",
+            "Session management"
+          ]
+        }
+      },
+      {
+        "from": "network_interface",
+        "to": "redis",
+        "label": "VPC Connection",
+        "style": "secondary"
+      }
+    ]
+  }
+}
