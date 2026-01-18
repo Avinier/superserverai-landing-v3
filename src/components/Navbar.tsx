@@ -14,24 +14,14 @@ const Navbar = () => {
           </span>
         </div>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation + CTA */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#platform" className="nav-link text-text-muted hover:text-text transition-colors text-sm">
-            Platform
+          <a href="#features" className="nav-link text-text-muted hover:text-text transition-colors text-sm">
+            Features
           </a>
-          <a href="#docs" className="nav-link text-text-muted hover:text-text transition-colors text-sm">
-            Docs
+          <a href="#security" className="nav-link text-text-muted hover:text-text transition-colors text-sm">
+            Security
           </a>
-          <a href="#pricing" className="nav-link text-text-muted hover:text-text transition-colors text-sm">
-            Pricing
-          </a>
-          <a href="#about" className="nav-link text-text-muted hover:text-text transition-colors text-sm">
-            About
-          </a>
-        </div>
-
-        {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center">
           <Button variant="primary" size="sm" className="btn-glow">
             Book a demo
           </Button>
@@ -72,17 +62,11 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-surface border-t border-border">
           <div className="px-6 py-4 flex flex-col gap-4">
-            <a href="#platform" className="text-text-muted hover:text-text transition-colors text-sm">
-              Platform
+            <a href="#features" className="text-text-muted hover:text-text transition-colors text-sm">
+              Features
             </a>
-            <a href="#docs" className="text-text-muted hover:text-text transition-colors text-sm">
-              Docs
-            </a>
-            <a href="#pricing" className="text-text-muted hover:text-text transition-colors text-sm">
-              Pricing
-            </a>
-            <a href="#about" className="text-text-muted hover:text-text transition-colors text-sm">
-              About
+            <a href="#security" className="text-text-muted hover:text-text transition-colors text-sm">
+              Security
             </a>
             <Button variant="primary" size="sm" className="w-fit">
               Book a demo

@@ -28,7 +28,7 @@ const variantStyles: Record<ButtonVariant, string> = {
   solid:
     'bg-text text-background hover:bg-text/90 hover:shadow-lg hover:shadow-white/10',
   outline:
-    'border border-border bg-surface text-text hover:bg-surface-elevated hover:border-primary/30',
+    'border border-border bg-surface text-text hover:bg-secondary hover:border-secondary',
   'solid-inverted':
     'bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:shadow-white/20',
   'outline-inverted':
