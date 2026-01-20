@@ -105,7 +105,7 @@ const Hero = () => {
   );
 
   return (
-    <section className="pt-32 pb-20 md:pt-40 md:pb-28">
+    <section className="pt-40 pb-20 md:pt-52 md:pb-28">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Column */}
@@ -130,9 +130,14 @@ const Hero = () => {
 
           {/* Right Column - Terminal */}
           <div className="animate-slide-in-right">
-            <div className="rounded-lg border border-border/60 overflow-hidden bg-[#0c0c0c]">
-              {/* Header */}
-              <div className="flex items-center justify-between px-3 py-2 bg-surface/50 border-b border-border/40">
+            {/* Gradient glow behind terminal */}
+            <div className="relative">
+              <div className="absolute -inset-px rounded-lg bg-gradient-to-br from-primary/20 via-transparent to-secondary/20 blur-sm" />
+              <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 blur-xl" />
+
+              <div className="relative rounded-lg border border-border/60 overflow-hidden bg-[#0c0c0c]">
+                {/* Header */}
+                <div className="flex items-center justify-between px-3 py-2 bg-surface/50 border-b border-border/40">
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-secondary/80" />
                   <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
@@ -141,8 +146,8 @@ const Hero = () => {
                 <span className="text-text-muted/50 text-xs font-mono">ssai ~ zsh</span>
               </div>
 
-              {/* Content */}
-              <div className="p-4 font-mono text-[13px] min-h-[220px] leading-relaxed">
+              {/* Content - fixed height */}
+              <div className="p-4 font-mono text-[13px] h-[220px] leading-relaxed overflow-hidden">
                 {/* Command 1 */}
                 <div className="flex">
                   <span className="text-secondary">❯</span>
@@ -212,6 +217,7 @@ const Hero = () => {
               <div className="flex items-center justify-between px-3 py-1.5 bg-surface/30 border-t border-border/30 text-[11px] font-mono text-text-muted/40">
                 <span><span className="text-primary">■</span> NORMAL</span>
                 <span>utf-8 | zsh</span>
+              </div>
               </div>
             </div>
           </div>

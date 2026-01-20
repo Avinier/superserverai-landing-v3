@@ -8,11 +8,9 @@ const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
-        <div className="flex items-center cursor-pointer">
-          <span className="font-mono text-2xl font-black">
-            <span className="text-primary">SuperServer</span><span className="text-secondary">.AI</span>
-          </span>
-        </div>
+        <a href="/" className="flex items-center cursor-pointer">
+          <img src="/logo-icon.png" alt="SuperServer AI" className="h-8 w-auto" />
+        </a>
 
         {/* Desktop Navigation + CTA */}
         <div className="hidden md:flex items-center gap-8">
