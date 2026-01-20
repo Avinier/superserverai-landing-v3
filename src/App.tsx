@@ -34,9 +34,9 @@ function App() {
       <main>
         <Hero />
         <HowItWorks />
+        <ChatWithDeployment />
         <AutoDiscovery />
         <CapabilitiesGrid />
-        <ChatWithDeployment />
         <Integrations />
         <CTABanner />
       </main>
